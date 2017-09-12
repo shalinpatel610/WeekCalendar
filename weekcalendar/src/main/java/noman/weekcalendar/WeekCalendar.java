@@ -20,9 +20,9 @@ import com.squareup.otto.Subscribe;
 
 import org.joda.time.DateTime;
 
-import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import noman.weekcalendar.decorator.DayDecorator;
@@ -175,10 +175,21 @@ public class WeekCalendar extends LinearLayout {
             }
 
             private String[] getWeekDayNames() {
+                /* Original Code
+
                 String[] names = DateFormatSymbols.getInstance().getShortWeekdays();
                 List<String> daysName = new ArrayList<>(Arrays.asList(names));
                 daysName.remove(0);
                 daysName.add(daysName.remove(0));
+
+                */
+
+                // New Code
+
+                String[] names = Weekdays();
+                List<String> daysName = new ArrayList<>(Arrays.asList(names));
+
+                // End of New Code
 
                 if (typedArray.getInt(R.styleable.WeekCalendar_dayNameLength, 0) == 0)
                     for (int i = 0; i < daysName.size(); i++)
@@ -194,6 +205,20 @@ public class WeekCalendar extends LinearLayout {
                     .WeekCalendar_weekBackgroundColor, ContextCompat.getColor(getContext(), R
                     .color.colorPrimary)));
         return daysName;
+    }
+
+    private String[] Weekdays() {
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        String[] names = {"Sun","Mon","Tue","Wed","Thur","Fri","Sat"};
+        List<String> daysName = new ArrayList<>(Arrays.asList(names));
+        for (int i = 0; i < (day - 2); i++){
+            daysName.add(daysName.remove(0));
+        }
+        for (int i = 0; i < 7; i++){
+            names[i] = daysName.get(i);
+        }
+        return names;
     }
 
     /**

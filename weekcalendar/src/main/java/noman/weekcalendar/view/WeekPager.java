@@ -118,13 +118,6 @@ public class WeekPager extends ViewPager {
         initPager(event.getSelectedDate());
     }
 
-    @Subscribe
-    public void setStartDate(Event.SetStartDateEvent event) {
-        WeekFragment.CalendarStartDate = event.getStartDate();
-        WeekFragment.selectedDateTime = event.getStartDate();
-        initPager(event.getStartDate());
-    }
-
     private int idCheck() {
         int id = 0;
         while (true) {

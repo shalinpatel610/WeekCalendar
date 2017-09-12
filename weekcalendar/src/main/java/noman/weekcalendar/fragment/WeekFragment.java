@@ -18,9 +18,9 @@ import android.widget.TextView;
 import com.squareup.otto.Subscribe;
 
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import noman.weekcalendar.R;
 import noman.weekcalendar.eventbus.BusProvider;
@@ -51,14 +51,29 @@ public class WeekFragment extends Fragment {
     private void init() {
         ArrayList<DateTime> days = new ArrayList<>();
         DateTime midDate = (DateTime) getArguments().getSerializable(DATE_KEY);
+        /* Original Code
+
         if (midDate != null) {
             midDate = midDate.withDayOfWeek(DateTimeConstants.THURSDAY);
         }
-        //Getting all seven days
 
         for (int i = -3; i <= 3; i++)
             days.add(midDate != null ? midDate.plusDays(i) : null);
 
+        */
+        // New Code
+
+        if (midDate != null) {
+            Calendar calendar = Calendar.getInstance();
+            int day = calendar.get(Calendar.DAY_OF_WEEK);
+            midDate = midDate.withDayOfWeek(day);
+        }
+
+        for (int i = -2; i <= 4; i++) {
+            days.add(midDate != null ? midDate.plusDays(i) : null);
+        }
+
+        // End of New Code
         startDate = days.get(0);
         endDate = days.get(days.size() - 1);
 
@@ -167,6 +182,4 @@ public class WeekFragment extends Fragment {
             return convertView;
         }
     }
-
-
 }
